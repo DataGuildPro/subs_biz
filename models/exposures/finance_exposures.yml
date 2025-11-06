@@ -1,0 +1,15 @@
+version: 2
+
+exposures:
+  - name: finance_kpis_dashboard
+    type: dashboard
+    maturity: high
+    url: https://bi.somecompany.example/dashboards/finance_kpis  # replace
+    description: "Finance dashboard powered by ARR and Cash mart models."
+    owner:
+      name: Finance Analytics
+      email: finance-analytics@somecompany.com
+    depends_on:
+      - ref('fct__arr_monthly')
+      - ref('fct__nrr_movement_monthly')
+      - ref('fct__billings_daily')

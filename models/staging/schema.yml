@@ -1,0 +1,69 @@
+version: 2
+
+models:
+  - name: stg__customers
+    description: "Cleaned customers from raw_prod.subs_biz.customers with stable surrogate key."
+    columns:
+      - name: customer_id
+        description: "Natural key from the source."
+        tests:
+          - not_null
+          - unique
+      - name: customer_sk
+        description: "Surrogate key (md5 of customer_id)."
+        tests:
+          - not_null
+          - unique
+
+  - name: stg__subscriptions
+    description: "Subscriptions normalized and clipped to the reporting window; includes MRR/ARR."
+    columns:
+      - name: subscription_id
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg__customers')
+                field: customer_id
+      - name: plan_tier
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['starter','standard','pro','enterprise']
+      - name: billing_period
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['monthly','annual']
+      - name: start_date
+        tests:
+          - not_null
+
+  - name: stg__payment_transactions
+    description: "Incremental staging of payment transactions, including refunds (negative amounts)."
+    columns:
+      - name: transaction_id
+        tests:
+          - not_null
+          - unique
+      - name: subscription_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg__subscriptions')
+                field: subscription_id
+      - name: customer_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg__customers')
+                field: customer_id
+      - name: status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['paid','failed','refunded']

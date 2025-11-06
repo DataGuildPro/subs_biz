@@ -1,0 +1,52 @@
+# models/sources/schema.yml
+version: 2
+sources:
+  - name: raw_prod
+    database: raw_prod
+    schema: subs_biz
+    loader: snowflake
+    tables:
+      - name: customers
+        columns:
+          - name: customer_id
+            tests:
+              - not_null
+              - unique
+      - name: subscriptions
+        columns:
+          - name: customer_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('raw_prod','customers')
+                    field: customer_id
+          - name: plan_tier
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['starter','standard','pro','enterprise']
+          - name: billing_period
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['monthly','annual']
+      - name: payment_transactions
+        columns:
+          - name: subscription_id
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('raw_prod','subscriptions')
+                    field: subscription_id
+          - name: customer_id
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('raw_prod','customers')
+                    field: customer_id
+          - name: status
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['paid','failed','refunded']

@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: fct__arr_monthly
+    description: "ARR at month end (12 × MRR)."
+    columns:
+      - name: period_end
+        tests:
+          - not_null
+          - unique
+
+  - name: fct__nrr_movement_monthly
+    description: "NRR decomposition: new, expansion, contraction, churn (MRR)."
+    columns:
+      - name: period_end
+        tests:
+          - not_null
+          - unique
+
+  - name: fct__billings_daily
+    description: "Incremental daily net/gross billings with refunds."
+    columns:
+      - name: billing_day
+        tests:
+          - not_null
+          - unique

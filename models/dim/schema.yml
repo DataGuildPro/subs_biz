@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: dim__calendar
+    description: "Date and month spine across reporting window."
+    columns:
+      - name: date_day
+        tests:
+          - not_null
+          - unique
