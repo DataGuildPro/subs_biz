@@ -1,6 +1,12 @@
 # models/sources/schema.yml
 version: 2
 sources:
+  - name: jaffle_shop
+    database: raw_prod
+    schema: jaffle_shop
+    loader: snowflake
+    tables:
+      - name: orders
   - name: raw_prod
     database: raw_prod
     schema: subs_biz
