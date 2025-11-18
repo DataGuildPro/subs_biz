@@ -7,6 +7,7 @@ sources:
     loader: snowflake
     tables:
       - name: orders
+      - name: customers
   - name: raw_prod
     database: raw_prod
     schema: subs_biz
