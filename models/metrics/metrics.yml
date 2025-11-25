@@ -21,4 +21,4 @@ metrics:
     label: "aov"
     type_params:
       numerator: { name: order_total }
-      denominator: { name: orders }
+      denominator: { name: order_count }

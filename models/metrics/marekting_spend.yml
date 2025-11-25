@@ -1,8 +1,0 @@
-semantic_models:
-  - name: marketing_spend
-    model: ref('marketing_spend')
-
-    measures:
-      - name: total_spend
-        agg: sum
-        expr: spend_amount
