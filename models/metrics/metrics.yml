@@ -1,0 +1,24 @@
+metrics: 
+  # Simple type metrics
+  - name: "order_total"
+    description: "Sum of orders value"
+    type: simple
+    label: "order_total"
+    type_params:
+      measure:
+        name: order_total
+
+  - name: "order_count"
+    description: "number of orders"
+    type: simple
+    label: "order_count"
+    type_params:
+      measure:
+        name: order_count
+    
+  - name: "aov"
+    type: ratio
+    label: "aov"
+    type_params:
+      numerator: { name: order_total }
+      denominator: { name: order_count }
